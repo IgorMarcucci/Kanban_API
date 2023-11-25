@@ -1,6 +1,7 @@
 from flask import jsonify, request
-from app import app, db
-from app.user_model import User
+from .models import User
+
+from ..app import app
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -19,7 +20,7 @@ def get_users():
 def get_user(id):
     user = User.query.get(id)
     if user is None:
-       return jsonify({'message': 'User not found'}), 404
+      return jsonify({'message': 'User not found'}), 404
     return jsonify({'id': user.id, 'username': user.username, 'email': user.email})
 
 @app.route('/user/<id>', methods=['PUT'])

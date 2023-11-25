@@ -1,4 +1,5 @@
-from app import db
+
+from .. import db
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -8,8 +9,7 @@ class User(db.Model):
     password = db.Column(db.String(32), unique=True, nullable=False)
     specialty = db.Column(db.String(32), unique=True, nullable=False)
     working_area = db.Column(db.String(32), unique=True, nullable=False)
-    
+
 
     def __repr__(self):
         return '<User %r>' % self.username
-
