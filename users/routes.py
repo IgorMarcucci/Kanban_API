@@ -1,8 +1,21 @@
-from flask import jsonify, request
+from flask import request
+from flask_login import login_required
+from users.models import User
 
 from ..app import app
 
-from .controllers import list_all_users_controller, create_user_controller, retrieve_user_controller, delete_user_controller
+from .controllers import list_all_users_controller, create_user_controller, retrieve_user_controller, delete_user_controller, login_user, logout_user
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.get_json()
+    user = User.query.filter_by(username=data['username']).first()
+    return login_user(user, data) 
+
+@app.route('/logout', methods=['POST'])
+@login_required
+def logout():
+    return logout_user()
 
 @app.route("/users", methods=['GET','POST'])
 def list_create_users():

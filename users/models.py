@@ -1,10 +1,10 @@
 
 from .. import db
-
+from flask_login import UserMixin
 from typing import List
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = "users_table"
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)

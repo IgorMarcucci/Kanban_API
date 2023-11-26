@@ -1,9 +1,10 @@
 from flask import request, jsonify
 import uuid
 import bcrypt
-
 from .. import db
 from .models import User
+from flask_login import login_user, logout_user
+
 
 def list_all_users_controller():
     users = User.query.all()
@@ -39,3 +40,13 @@ def delete_user_controller(user_id):
     db.session.commit()
 
     return ('User with Id "{}" deleted successfully!').format(user_id)
+
+def login_user(user, data):
+    if user and user.password == data['password']:
+        login_user(user)
+        return jsonify({'message': 'User logged in'}), 200
+    return jsonify({'message': 'Invalid credentials'}), 401
+
+def logout_user():
+    logout_user()
+    return jsonify({'message': 'User logged out'}), 200
