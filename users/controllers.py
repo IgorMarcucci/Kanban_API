@@ -41,12 +41,12 @@ def delete_user_controller(user_id):
 
     return ('User with Id "{}" deleted successfully!').format(user_id)
 
-def login_user(user, data):
+def login_user_controller(user, data):
     if user and user.password == data['password']:
         login_user(user)
         return jsonify({'message': 'User logged in'}), 200
     return jsonify({'message': 'Invalid credentials'}), 401
 
-def logout_user():
+def logout_user_controller():
     logout_user()
     return jsonify({'message': 'User logged out'}), 200
