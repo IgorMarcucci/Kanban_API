@@ -1,44 +1,17 @@
 from flask import jsonify, request
-from .models import User
 
 from ..app import app
 
-@app.route('/user', methods=['POST'])
-def create_user():
-    data = request.get_json()
-    new_user = User(username=data['username'], email=data['email'])
-    db.session.add(new_user)
-    db.session.commit()
-    return jsonify({'message': 'User created'}), 201
+from .controllers import list_all_users_controller, create_user_controller, retrieve_user_controller, delete_user_controller
 
-@app.route('/user', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([{'id': user.id, 'username': user.username, 'email': user.email} for user in users])
+@app.route("/users", methods=['GET','POST'])
+def list_create_users():
+    if request.method == 'GET': return list_all_users_controller()
+    if request.method == 'POST': return create_user_controller()
+    else: return 'Method is Not Allowed'
 
-@app.route('/user/<id>', methods=['GET'])
-def get_user(id):
-    user = User.query.get(id)
-    if user is None:
-      return jsonify({'message': 'User not found'}), 404
-    return jsonify({'id': user.id, 'username': user.username, 'email': user.email})
-
-@app.route('/user/<id>', methods=['PUT'])
-def update_user(id):
-    data = request.get_json()
-    user = User.query.get(id)
-    if user is None:
-        return jsonify({'message': 'User not found'}), 404
-    user.username = data['username']
-    user.email = data['email']
-    db.session.commit()
-    return jsonify({'message': 'User updated'}), 200
-
-@app.route('/user/<id>', methods=['DELETE'])
-def delete_user(id):
-    user = User.query.get(id)
-    if user is None:
-        return jsonify({'message': 'User not found'}), 404
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({'message': 'User deleted'}), 200
+@app.route("/users/<user_id>", methods=['GET', 'PUT', 'DELETE'])
+def retrieve_update_destroy_user(item_id):
+    if request.method == 'GET': return retrieve_user_controller(item_id)
+    if request.method == 'DELETE': return delete_user_controller(item_id)
+    else: return 'Method is Not Allowed'
