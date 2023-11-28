@@ -1,10 +1,9 @@
 from flask import request, jsonify
 import uuid
-import bcrypt
+import hashlib
 from .. import db
 from .models import User
 from flask_login import login_user, logout_user
-
 
 def list_all_users_controller():
     users = User.query.all()
@@ -16,12 +15,13 @@ def create_user_controller():
     request_form = request.form.to_dict()
 
     id = str(uuid.uuid4())
+    print(request.form.to_dict())
     new_user = User(
                     id           = id,
                     name         = request_form['name'],
                     username = request_form['username'],
                     email = request_form['email'],
-                    password = bcrypt.hashpw(request_form['password'], 5),
+                    password = hashlib.sha256(request_form['password'].encode('utf-8')).hexdigest(),
                     specialty = request_form['specialty'],
                     working_area = request_form['working_area'],
                     )
@@ -41,8 +41,10 @@ def delete_user_controller(user_id):
 
     return ('User with Id "{}" deleted successfully!').format(user_id)
 
-def login_user_controller(user, data):
-    if user and user.password == data['password']:
+def login_user_controller():
+    data = request.get_json()
+    user = User.query.filter_by(username=data['username']).first()
+    if user and hashlib.sha256(data['password'].encode('utf-8')).hexdigest() == user.password:
         login_user(user)
         return jsonify({'message': 'User logged in'}), 200
     return jsonify({'message': 'Invalid credentials'}), 401

@@ -1,16 +1,11 @@
 from flask import request
 from flask_login import login_required
-from users.models import User
-
 from ..app import app
-
 from .controllers import list_all_users_controller, create_user_controller, retrieve_user_controller, delete_user_controller, login_user_controller, logout_user_controller
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.get_json()
-    user = User.query.filter_by(username=data['username']).first()
-    return login_user_controller(user, data) 
+    return login_user_controller()
 
 @app.route('/logout', methods=['POST'])
 @login_required
