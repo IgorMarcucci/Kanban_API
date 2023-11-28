@@ -34,3 +34,7 @@ def delete_dashboard_controller(dashboard_id):
     db.session.commit()
 
     return ('Dashboard with Id "{}" deleted successfully!').format(dashboard_id)
+
+def get_dashboard_by_user_id_controller(user_id):
+    response = Dashboard.query.filter_by(user_id=user_id).all()
+    return jsonify(response)
