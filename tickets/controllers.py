@@ -11,7 +11,7 @@ def list_all_tickets_controller():
     return jsonify(response)
 
 def create_ticket_controller():
-    request_form = request.form.to_dict()
+    request_form = request.get_json()
 
     id = str(uuid.uuid4())
     new_ticket = Ticket(

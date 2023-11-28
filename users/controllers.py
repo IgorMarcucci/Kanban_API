@@ -12,10 +12,9 @@ def list_all_users_controller():
     return jsonify(response)
 
 def create_user_controller():
-    request_form = request.form.to_dict()
+    request_form = request.get_json()
 
     id = str(uuid.uuid4())
-    print(request.form.to_dict())
     new_user = User(
                     id           = id,
                     name         = request_form['name'],

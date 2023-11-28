@@ -11,12 +11,13 @@ def list_all_dashboards_controller():
     return jsonify(response)
 
 def create_dashboard_controller():
-    request_form = request.form.to_dict()
+    request_form = request.get_json()
 
     id = str(uuid.uuid4())
     new_dashboard = Dashboard(
                     id           = id,
                     name         = request_form['name'],
+                    user_id = request_form['user_id'],
                     )
     db.session.add(new_dashboard)
     db.session.commit()

@@ -8,7 +8,7 @@ def login():
     return login_user_controller()
 
 @app.route('/logout', methods=['POST'])
-@login_required
+@app.login_manager.user_loader
 def logout():
     return logout_user_controller()
 
@@ -17,12 +17,12 @@ def create_user():
     return create_user_controller()
 
 @app.route("/users/getUsers", methods=['GET'])
-@login_required
+@app.login_manager.user_loader
 def get_users():
     return list_all_users_controller()
 
 @app.route("/users/<user_id>", methods=['GET', 'PUT', 'DELETE'])
-@login_required
+@app.login_manager.user_loader
 def retrieve_update_destroy_user(item_id):
     if request.method == 'GET': return retrieve_user_controller(item_id)
     if request.method == 'DELETE': return delete_user_controller(item_id)
