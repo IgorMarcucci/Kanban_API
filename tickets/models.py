@@ -9,6 +9,7 @@ class Ticket(db.Model):
     id = db.Column(db.String(128), primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     description = db.Column(db.String(300), nullable=False)
+    status = db.Column(db.String(32), nullable=False)
     dashboard_id: Mapped[str] = mapped_column(ForeignKey("dashboards_table.id"))
 
     def __repr__(self):
@@ -19,5 +20,6 @@ class Ticket(db.Model):
             "id": self.id,
             "name": self.name,
             "description": self.description,
+            "status": self.status,
             "dashboard_id": self.dashboard_id
         }

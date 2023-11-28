@@ -35,3 +35,18 @@ def delete_ticket_controller(ticket_id):
     db.session.commit()
 
     return ('Ticket with Id "{}" deleted successfully!').format(ticket_id)
+
+def update_ticket_status_controller(ticket_id):
+    request_form = request.get_json()
+    ticket = Ticket.query.get(ticket_id)
+    ticket.status = request_form['status']
+    db.session.commit()
+
+    response = Ticket.query.get(ticket_id).toDict()
+    return jsonify(response)
+
+def get_tickets_by_dashboard_controller(dashboard_id):
+    tickets = Ticket.query.filter_by(dashboard_id=dashboard_id).all()
+    response = []
+    for ticket in tickets: response.append(ticket.toDict())
+    return jsonify(response)
