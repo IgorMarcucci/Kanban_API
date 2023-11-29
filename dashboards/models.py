@@ -19,6 +19,6 @@ class Dashboard(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "tickets": self.tickets,
+            "tickets": [ticket.toDict() for ticket in self.tickets],
             "user_id": self.user_id
         }

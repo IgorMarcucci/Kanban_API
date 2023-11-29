@@ -15,11 +15,12 @@ def create_ticket_controller():
 
     id = str(uuid.uuid4())
     new_ticket = Ticket(
-                    id           = id,
-                    name         = request_form['name'],
-                    description = request_form['description'],
-                    dashboard_id = request_form['dashboard_id']
-                    )
+        id           = id,
+        name         = request_form['name'],
+        description = request_form['description'],
+        status = request_form['status'],
+        dashboard_id = request_form['dashboard_id']
+    )
     db.session.add(new_ticket)
     db.session.commit()
 

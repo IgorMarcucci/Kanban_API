@@ -36,5 +36,18 @@ def delete_dashboard_controller(dashboard_id):
     return ('Dashboard with Id "{}" deleted successfully!').format(dashboard_id)
 
 def get_dashboard_by_user_id_controller(user_id):
-    response = Dashboard.query.filter_by(user_id=user_id).all()
+    dashboard = Dashboard.query.filter_by(user_id=user_id).all()
+    response = []
+    if dashboard is None:
+        return jsonify({"error": "No dashboard found for this user_id"}), 404
+    else:
+        for dash in dashboard: response.append(dash.toDict())
+        return jsonify(response)
+    
+def change_dashboard_controller(dashboard_id):
+    request_form = request.get_json()
+    dashboard = Dashboard.query.get(dashboard_id)
+    dashboard.name = request_form['name']
+    db.session.commit()
+    response = dashboard.toDict()
     return jsonify(response)

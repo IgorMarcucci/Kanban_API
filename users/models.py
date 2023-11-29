@@ -26,5 +26,5 @@ class User(UserMixin, db.Model):
             "email": self.email,
             "specialty": self.specialty,
             "working_area": self.working_area,
-            "dashboards": self.dashboards
+            "dashboards": [dashboard.toDict() for dashboard in self.dashboards]
         }
