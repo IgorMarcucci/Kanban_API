@@ -17,12 +17,12 @@ def create_user_controller():
     id = str(uuid.uuid4())
     new_user = User(
         id           = id,
-        name         = request_form['name'],
+        name         = "mock",
         username = request_form['username'],
         email = request_form['email'],
         password = hashlib.sha256(request_form['password'].encode('utf-8')).hexdigest(),
-        specialty = request_form['specialty'],
-        working_area = request_form['working_area'],
+        specialty = "mock",
+        working_area = "mock",
     )
     db.session.add(new_user)
     db.session.commit()

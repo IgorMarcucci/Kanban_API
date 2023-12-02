@@ -2,7 +2,7 @@ from flask import request
 from .models import Ticket
 from flask_login import login_required
 from ..app import app
-from .controllers import list_all_tickets_controller, create_ticket_controller, retrieve_ticket_controller, delete_ticket_controller, update_ticket_status_controller, get_tickets_by_dashboard_controller
+from .controllers import list_all_tickets_controller, create_ticket_controller, retrieve_ticket_controller, delete_ticket_controller, update_ticket_status_controller, get_tickets_by_dashboard_controller, update_ticket_data_controller
 
 @app.route("/tickets", methods=['GET'])
 @app.login_manager.user_loader
@@ -32,6 +32,12 @@ def delete_ticket_by_id(id):
 @app.login_manager.user_loader
 def update_ticket_status(id):
     if request.method == 'PUT': return update_ticket_status_controller(id)
+    else: return 'Method is Not Allowed'
+
+@app.route("/tickets/changeData/<id>", methods=['PUT'])
+@app.login_manager.user_loader
+def update_ticket_data(id):
+    if request.method == 'PUT': return update_ticket_data_controller(id)
     else: return 'Method is Not Allowed'
 
 @app.route("/tickets/getTicketsByDashboard/<dashboard_id>", methods=['GET'])

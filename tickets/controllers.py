@@ -19,7 +19,8 @@ def create_ticket_controller():
         name         = request_form['name'],
         description = request_form['description'],
         status = request_form['status'],
-        dashboard_id = request_form['dashboard_id']
+        dashboard_id = request_form['dashboard_id'],
+        priority = request_form['priority']
     )
     db.session.add(new_ticket)
     db.session.commit()
@@ -45,6 +46,18 @@ def update_ticket_status_controller(ticket_id):
 
     response = Ticket.query.get(ticket_id).toDict()
     return jsonify(response)
+
+def update_ticket_data_controller(ticket_id):
+    request_form = request.get_json()
+    ticket = Ticket.query.get(ticket_id)
+    ticket.name = request_form['name']
+    ticket.description = request_form['description']
+    ticket.priority = request_form['priority']
+    db.session.commit()
+
+    response = Ticket.query.get(ticket_id).toDict()
+    return jsonify(response)
+
 
 def get_tickets_by_dashboard_controller(dashboard_id):
     tickets = Ticket.query.filter_by(dashboard_id=dashboard_id).all()
